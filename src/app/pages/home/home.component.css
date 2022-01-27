@@ -1,0 +1,68 @@
+.title, .table-heading-inner {
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title h3, .table-heading-inner>div>h3{
+  font-size: 35px;
+}
+
+.table {
+  width: 80%;
+  margin: auto;
+}
+
+.table-heading {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #616161;
+  color: #FAFAFA;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
+
+table {
+  width: 100%;
+}
+
+
+/* mat */
+
+.mat-row:nth-child(odd){
+  background-color: #EEEEEE;
+}
+
+.mat-column-No, .mat-column-Player, .mat-column-Class,
+ .mat-column-Role, .mat-column-Action, .header-table {
+  flex: none;
+  width: 20%;
+}
+
+.mat-column-Action button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mat-column-Action button:nth-child(2) {
+  color: #424242;
+}
+
+.mat-column-Action button:nth-child(1) {
+  color: #424242;
+  padding: 0;
+}
+
+.add-circle {
+  font-size: 55px;
+  cursor: pointer;
+}
+
+.table-heading-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

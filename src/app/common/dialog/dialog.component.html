@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>{{data?.title}}</h1>
+<div mat-dialog-content>
+  <p>Enter The Player Name</p>
+  <mat-form-field appearance="fill">
+    <mat-label>PlayerName</mat-label>
+    <input matInput [(ngModel)]="data.playerName" >
+  </mat-form-field>
+  <p>Enter The Player Class</p>
+  <mat-form-field appearance="fill">
+    <mat-label>PlayerClass</mat-label>
+    <input matInput  [(ngModel)]="data.playerClass" >
+  </mat-form-field>
+  <p>Select The Player Role</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Select The Player Role</mat-label>
+    <mat-select [(ngModel)] = "playerRoleChange" (selectionChange)="changeRole($event.value)">
+      <mat-option *ngFor="let role of roles" [value]="role.value">
+        {{role.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{data.AddOrEdit}}</button>
+</div>
