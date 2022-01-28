@@ -6,11 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './common/material.module';
 import { HomeComponent } from './pages/home/home.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {initializeKeycloak} from './utils/app.keycloak';
 import { PlayerServices } from './services/players.services';
 import { FormsModule } from '@angular/forms';
 import { DialogComponent } from './common/dialog/dialog.component';
+import { AuthInterceptor } from 'angular-auth-oidc-client';
+
 
 
 @NgModule({
@@ -26,7 +28,7 @@ import { DialogComponent } from './common/dialog/dialog.component';
     HttpClientModule,
     MaterialModule,
     BrowserAnimationsModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
   ],
   providers: [
     {
@@ -35,6 +37,7 @@ import { DialogComponent } from './common/dialog/dialog.component';
       multi: true,
       deps: [KeycloakService]
     },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     PlayerServices
   ],
   bootstrap: [AppComponent]
