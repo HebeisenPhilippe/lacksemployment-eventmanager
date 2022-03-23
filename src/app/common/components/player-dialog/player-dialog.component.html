@@ -1,0 +1,29 @@
+<form #playerForm="ngForm" (ngSubmit)="dismiss()">
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+  <div mat-dialog-content>
+    <p>{{ 'Enter The Player Name' | translate}}</p>
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'Player Name' | translate}}</mat-label>
+      <input name="name" matInput ngModel required>
+    </mat-form-field>
+    <p>{{ 'Enter The Player Class' | translate }}</p>
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'Player Class' | translate }}</mat-label>
+      <input name="playerClass" matInput ngModel required>
+    </mat-form-field>
+    <p>{{ 'Select The Player Role' | translate }}</p>
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'Player Role' | translate}}</mat-label>
+      <mat-select name="role" ngModel required>
+        <mat-option *ngFor="let role of roles" [value]="role.name">
+          {{role.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="undefined">{{ data.cancelButtonText ? data.cancelButtonText : 'Cancel' | translate}}</button>
+    <button type="submit" [disabled]="playerForm?.invalid" mat-button>{{ data.saveButtonText | translate }}</button>
+  </div>
+
+</form>

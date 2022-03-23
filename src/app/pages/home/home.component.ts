@@ -1,91 +1,116 @@
-import { DialogComponent } from '../../common/dialog/dialog.component';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PlayerServices } from '../../services/players.services';
-import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import {Player} from "../../common/models/player/player";
+import {PlayerService} from "../../common/services/player.service";
+import {PlayerDialogComponent} from "../../common/components/player-dialog/player-dialog.component";
+import {IPlayerDialog} from "../../common/interfaces/player-dialog";
+import {IPlayerForm} from "../../common/interfaces/player-form";
+import {AppService} from "../../common/services/app.service";
+import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
 
   displayedColumns: string[] = ['No', 'Player', 'Class', 'Role', 'Action'];
-  dataSource: any[] = [];
-  playerName: string = '';
-  playerClass: string = '';
-  playerRole: string = '';
+  players: Player[] = [];
 
   constructor(
-    private playerService: PlayerServices,
-    private http: HttpClient,
+    private appService: AppService,
+    private playerService: PlayerService,
     private dialog: MatDialog
   ) { }
 
+
   ngOnInit(): void {
-    this.gettingPlayer();
+    this.getPlayers();
   }
 
-  gettingPlayer(): any {
-    this.playerService.getPlayers().subscribe((data: any) => {
-      if (data.length > 0) {
-        this.dataSource = data;
+  getPlayers(): any {
+    this.appService.showLoader();
+    this.playerService.getPlayers()
+      .subscribe(
+        data => this.players = data,
+        error => console.log(error.message),
+        () => this.appService.hideLoader()
+      )
+  }
+
+  createPlayer(): void {
+    const data: IPlayerDialog = {
+      title: _('Create a New Player'),
+      saveButtonText: _('Create'),
+      player: new Player()
+    }
+    this.dialog.open(PlayerDialogComponent, {
+      width: '250px',
+      data
+    }).afterClosed()
+      .subscribe(
+        (formData: IPlayerForm | undefined) => {
+          if (formData !== undefined) {
+            this.storePlayer(formData);
+          }
+        },
+        error => console.log(error.message)
+      );
+  }
+
+  editPlayer(player: Player): void {
+    const data: IPlayerDialog = {
+      title: _(`Edit Player`),
+      saveButtonText: _('Update'),
+      player
+    }
+    this.dialog.open(PlayerDialogComponent, {
+      width: '250px',
+      data
+    }).afterClosed().subscribe(
+      (formData: IPlayerForm | undefined) => {
+        if (formData !== undefined) {
+          this.updatePlayer(formData);
+        }
       }
-    }, (err) => {
-      console.log(err.message);
-    })
+    );
   }
 
-  addPlayer(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px',
-      data: { title: 'Enter The Detail', AddOrEdit: 'Add' },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.addingPlayer(result);
-    });
+  deletePlayer(player: Player): void {
+    this.appService.confirm()
+      .subscribe((isAccepted) => {
+        if (isAccepted) {
+          this.removePlayer(player);
+        }
+      })
   }
 
-  addingPlayer(data: any): any {
-    this.playerService.addPlayer(data).subscribe((data: any) => {
-      console.log(data)
-      console.log("Player Added");
-      this.gettingPlayer();
-    }, (err: any) => {
-      console.log(err.message);
-    });
+
+  private storePlayer(data: IPlayerForm) {
+    this.appService.showLoader();
+    this.playerService.store(data).subscribe(
+      response => this.getPlayers(),
+      error => console.log(error.message),
+      () => this.appService.hideLoader()
+    )
   }
 
-  editPlayer(element: any): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px',
-      data: { AddOrEdit: 'Save', title: 'Edit The Detail', id: element.id, playerName: element.name, playerClass: element.playerClass, playerRole: element.role },
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      this.editingPlayer(result);
-    });
+  private updatePlayer(data: IPlayerForm) {
+    this.appService.showLoader();
+    this.playerService.update(data).subscribe(
+      response => this.getPlayers(),
+      error => console.log(error.message),
+      () => this.appService.hideLoader()
+    )
   }
 
-  editingPlayer(data: any) {
-    this.playerService.editPlayer(data).subscribe((data: any) => {
-      console.log("Player Edited");
-      this.gettingPlayer();
-    }, (err: any) => {
-      console.log(err.message);
-    });
+  private removePlayer(player: Player) {
+    this.appService.showLoader();
+    this.playerService.delete(player).subscribe(
+      response => this.getPlayers(),
+      error => console.log(error.message),
+      () => this.appService.hideLoader()
+    )
   }
-
-  deletePlayer(id: any) {
-    this.playerService.deletePlayer(id).subscribe((data: any) => {
-      console.log("Player Deleted");
-      this.gettingPlayer();
-    }, (err: any) => {
-      console.log(err.message);
-    });
-  }
-
 }

@@ -1,8 +1,8 @@
 <div>
   <div class="title">
-    <h3>Welcome Raider !</h3>
-    </div>
+    <h3>{{ 'Welcome Raider !' | translate}}</h3>
   </div>
+</div>
 <div class="main">
 
   <div class="table">
@@ -10,41 +10,41 @@
       <div class="table-heading-inner">
         <div></div>
         <div>
-        <h3>Players</h3>
+          <h3>{{ 'Players' | translate }}</h3>
         </div>
-        <div (click)="addPlayer()" class="add-circle"><mat-icon [inline]="true">add_circle</mat-icon></div>
-        </div>
+        <div (click)="createPlayer()" class="add-circle"><mat-icon [inline]="true">add_circle</mat-icon></div>
+      </div>
     </div>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table mat-table [dataSource]="players" class="mat-elevation-z8">
       <ng-container matColumnDef="No" >
-        <th class="header-table" mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element">
-          {{element.id}}
+        <th class="header-table" mat-header-cell *matHeaderCellDef> {{ 'ID' | translate }} </th>
+        <td mat-cell *matCellDef="let player">
+          {{player.id}}
         </td>
       </ng-container>
       <ng-container matColumnDef="Player" >
-        <th class="header-table" mat-header-cell *matHeaderCellDef> Players </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <th class="header-table" mat-header-cell *matHeaderCellDef> {{ 'Players' | translate}} </th>
+        <td mat-cell *matCellDef="let player"> {{player.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Class" >
-        <th class="header-table" mat-header-cell *matHeaderCellDef> Class </th>
-        <td mat-cell *matCellDef="let element"> {{element.playerClass}} </td>
+        <th class="header-table" mat-header-cell *matHeaderCellDef> {{ 'Class' | translate }} </th>
+        <td mat-cell *matCellDef="let player"> {{player.playerClass}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Role">
-        <th class="header-table" mat-header-cell *matHeaderCellDef> Role </th>
-        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+        <th class="header-table" mat-header-cell *matHeaderCellDef> {{ 'Role' | translate}} </th>
+        <td mat-cell *matCellDef="let player"> {{player.role.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Action">
-        <th class="header-table" mat-header-cell *matHeaderCellDef> Action </th>
-        <td mat-cell *matCellDef="let element">
-          <button (click)="editPlayer(element)" mat-icon-button color="accent" >
+        <th class="header-table" mat-header-cell *matHeaderCellDef> {{ 'Action' | translate }} </th>
+        <td mat-cell *matCellDef="let player">
+          <button (click)="editPlayer(player)" mat-icon-button color="accent" >
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
 
-          <button (click)="deletePlayer(element.id)" mat-icon-button color="accent" >
+          <button (click)="deletePlayer(player)" mat-icon-button color="accent" >
             <mat-icon aria-label="Delete">delete</mat-icon>
           </button>
         </td>
@@ -52,5 +52,5 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    </div>
   </div>
+</div>

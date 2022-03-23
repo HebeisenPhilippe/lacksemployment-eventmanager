@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import {ILanguage} from "./common/interfaces/language";
+import {TranslateService} from "@ngx-translate/core";
+import {LanguageService} from "./common/services/language.service";
 
 
 @Component({
@@ -8,26 +11,24 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'lacksemployment-eventmanager';
+  languages: ILanguage[] = [];
 
-  constructor(public oidcSecurityService: OidcSecurityService) {}
-  ngOnInit(): void {
+  constructor(private oidcSecurityService: OidcSecurityService,
+              private languageService: LanguageService,
+              private translateService: TranslateService) {}
 
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, userData, accessToken }) => {
-     // this.oidcSecurityService.authorize();
-      console.log('app authenticated', isAuthenticated);
-      console.log(`Current access token is '${accessToken}'`);
-    });
-  }
-
-
-  login() {
-    this.oidcSecurityService.authorize();
-    console.log("DID YOU LOGIN?????");
+  ngOnInit() {
+    this.languages = this.languageService.getAvailableLanguages();
   }
 
   logout() {
     this.oidcSecurityService.logoff();
+  }
+
+  selectLanguage(language: ILanguage) {
+    localStorage.setItem('language', language.code);
+    this.translateService.use(language.code);
   }
 }
