@@ -7,7 +7,11 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "ci:e2e": "ng run blog-frog:cypress-run",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -43,10 +47,13 @@
     "@angular/compiler-cli": "~13.3.0",
     "@biesbjerg/ngx-translate-extract": "^7.0.4",
     "@biesbjerg/ngx-translate-extract-marker": "^1.0.0",
+    "@cypress/schematic": "^1.6.0",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
+    "cypress": "^9.5.2",
+    "cypress-keycloak": "^1.8.0",
     "eslint": "^7.26.0",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",
